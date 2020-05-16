@@ -1,0 +1,10 @@
+[Unit]
+Description=Get bytes remaining for current AA line and expose them to prometheus
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=@PREFIX@/bin/aa-quota-remaining-prometheus
+
+[Install]
+WantedBy=network.target
