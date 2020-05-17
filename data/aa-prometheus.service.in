@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=@PREFIX@/bin/aa-quota-remaining-prometheus
+ExecStart=@PREFIX@/bin/aa-prometheus
 
 [Install]
 WantedBy=network.target

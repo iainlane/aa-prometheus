@@ -42,7 +42,7 @@ class PostInstallCommand(install):
 
 
 setup(
-    name="AAQuotaPrometheus",
+    name="AAPrometheus",
     version="0.1",
     install_requires=[
         "aiohttp",
@@ -52,14 +52,12 @@ setup(
     ],
     packages=find_packages(),
     entry_points={
-        "console_scripts": [
-            "aa-quota-remaining-prometheus = aa_prometheus.quota.quota_remaining.__main__:start_web_server"
-        ]
+        "console_scripts": ["aa-prometheus = aa_prometheus.__main__:main"]
     },
     data_files=[
         (
             os.path.join("lib", "systemd", "system"),
-            [os.path.join("data", "aa-quota-remaining-prometheus.service")],
+            [os.path.join("data", "aa-prometheus.service")],
         )
     ],
     cmdclass={
