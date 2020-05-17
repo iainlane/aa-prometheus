@@ -36,6 +36,8 @@ class InstallDataCommand(install_data):
 class PostInstallCommand(install):
     def run(self):
         install.run(self)
+        if self.dry_run:
+            return
         systemd_unit = os.path.join(
             self.prefix,
             "lib",
