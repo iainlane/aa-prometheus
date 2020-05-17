@@ -36,9 +36,28 @@ class InstallDataCommand(install_data):
 class PostInstallCommand(install):
     def run(self):
         install.run(self)
-        subprocess.check_call(
-            ["systemctl", "enable", "aa-quota-remaining-prometheus.service"]
+        systemd_unit = os.path.join(
+            self.prefix,
+            "lib",
+            "systemd",
+            "system",
+            "aa-prometheus.service",
         )
+        systemd_enable_unit = os.path.join(
+            os.path.sep,
+            "etc",
+            "systemd",
+            "system",
+            "network.target.wants",
+            "aa-prometheus.service",
+        )
+
+        if not os.path.exists(systemd_enable_unit) and os.path.exists(
+            systemd_unit
+        ):
+            subprocess.check_call(
+                ["systemctl", "enable", "aa-prometheus.service"]
+            )
 
 
 setup(
