@@ -39,11 +39,7 @@ class PostInstallCommand(install):
         if self.dry_run:
             return
         systemd_unit = os.path.join(
-            self.prefix,
-            "lib",
-            "systemd",
-            "system",
-            "aa-prometheus.service",
+            self.prefix, "lib", "systemd", "system", "aa-prometheus.service"
         )
         systemd_enable_unit = os.path.join(
             os.path.sep,
