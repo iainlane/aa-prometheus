@@ -17,11 +17,12 @@ class InstallDataCommand(install_data):
                 if os.path.exists(data_file):
                     continue
                 try:
-                    with open(f'{data_file}.in', 'r') as rf:
-                        with open(f'{data_file}', 'w') as wf:
+                    with open(f"{data_file}.in", "r") as rf:
+                        with open(f"{data_file}", "w") as wf:
                             for line in rf:
-                                wf.write(line.replace(
-                                    '@PREFIX@', self.install_dir))
+                                wf.write(
+                                    line.replace("@PREFIX@", self.install_dir)
+                                )
                         files_to_delete.append(data_file)
                 except FileNotFoundError:
                     raise
@@ -36,19 +37,33 @@ class PostInstallCommand(install):
     def run(self):
         install.run(self)
         subprocess.check_call(
-            ["systemctl", "enable", "aa-quota-remaining-prometheus.service"])
+            ["systemctl", "enable", "aa-quota-remaining-prometheus.service"]
+        )
 
 
 setup(
     name="AAQuotaPrometheus",
     version="0.1",
-    install_requires=["aiohttp", "prometheus-async",
-                      "prometheus-client", "requests"],
+    install_requires=[
+        "aiohttp",
+        "prometheus-async",
+        "prometheus-client",
+        "requests",
+    ],
     packages=find_packages(),
-    scripts=["aa-quota-remaining-prometheus"],
-    data_files=[(os.path.join('lib', 'systemd', 'system'),
-                 ['aa-quota-remaining-prometheus.service'])],
-    cmdclass={'install': PostInstallCommand,
-              'install_data': InstallDataCommand}
-
+    entry_points={
+        "console_scripts": [
+            "aa-quota-remaining-prometheus = aa_prometheus.quota.quota_remaining.__main__:start_web_server"
+        ]
+    },
+    data_files=[
+        (
+            os.path.join("lib", "systemd", "system"),
+            [os.path.join("data", "aa-quota-remaining-prometheus.service")],
+        )
+    ],
+    cmdclass={
+        "install": PostInstallCommand,
+        "install_data": InstallDataCommand,
+    },
 )
